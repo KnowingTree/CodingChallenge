@@ -1,7 +1,10 @@
 package domain
 
+import deserializationObjects.JsonElement
+import deserializationObjects.JsonValue
+
 data class Element(
-    val id: Int,
-    val nodes: List<Node>,
-    val height: Double
+    var id: Int,
+    var nodes: List<Int>,
+    var height: Double
 )
