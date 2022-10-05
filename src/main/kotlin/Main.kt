@@ -1,7 +1,30 @@
+
+import deserializationObjects.JsonInput
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import mapping.ElementMapper
+
+import java.io.File
+
 fun main(args: Array<String>) {
     println("Hello World!")
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
     println("Program arguments: ${args.joinToString()}")
+    if (args.isEmpty() || args.size < 2) {
+        File("ErrorOutput.txt").writeText("Arguments were wrong")
+        throw Exception("Arguments were wrong")
+    }
+    val absolutePathToFile = args[0]
+    val numberOfViewSpots = args[1]
+
+    println("Starting to find $numberOfViewSpots viewPoints in $absolutePathToFile")
+
+    val jsonString = File(absolutePathToFile).readText(Charsets.UTF_8)
+    val jsonInput = Json.decodeFromString<JsonInput>(jsonString)
+    val jsonValues = jsonInput.values
+    val jsonElements = jsonInput.elements
+
+    val elements = ElementMapper().mapToListOfElements(jsonElements, jsonValues).sortedByDescending { it.height }
+
+    println("wait debugging time")
 }
