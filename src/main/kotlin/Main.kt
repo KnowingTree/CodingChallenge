@@ -1,6 +1,7 @@
 
 import deserializationObjects.JsonInput
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import mapping.ElementMapper
 
@@ -15,9 +16,9 @@ fun main(args: Array<String>) {
         throw Exception("Arguments were wrong")
     }
     val absolutePathToFile = args[0]
-    val numberOfViewSpots = args[1]
+    val numberOfViewSpots = args[1].toInt()
 
-    println("Starting to find $numberOfViewSpots viewPoints in $absolutePathToFile")
+    println("Starting to search for up to $numberOfViewSpots viewPoints in $absolutePathToFile")
 
     val jsonString = File(absolutePathToFile).readText(Charsets.UTF_8)
     val jsonInput = Json.decodeFromString<JsonInput>(jsonString)
@@ -25,6 +26,10 @@ fun main(args: Array<String>) {
     val jsonElements = jsonInput.elements
 
     val elements = ElementMapper().mapToListOfElements(jsonElements, jsonValues).sortedByDescending { it.height }
+    val viewSpotFinder = ViewSpotFinder(elements)
+    val viewSpots = viewSpotFinder.findViewSpots(numberOfViewSpots)
 
-    println("wait debugging time")
+    val bubu = Json.encodeToString(viewSpots)
+
+    File("Output.json").writeText(bubu)
 }
