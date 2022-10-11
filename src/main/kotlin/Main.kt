@@ -8,15 +8,15 @@ import mapping.ElementMapper
 import java.io.File
 
 fun main(args: Array<String>) {
-    println("Hello World!")
-
-    val absolutePathToFile = args[0]
-    val numberOfViewSpots = args[1].toInt()
     val output = Output()
+    val validation = Validation(output)
 
-    println("Starting to search for up to $numberOfViewSpots viewPoints in $absolutePathToFile")
+    val pathToFile = validation.validateIfFileIsPresent(args[0])
+    val numberOfViewSpots = validation.transformAndValidateViewSpotParameter(args[1])
 
-    val jsonString = File(absolutePathToFile).readText(Charsets.UTF_8)
+    println("Starting to search for up to $numberOfViewSpots viewPoints in $pathToFile")
+
+    val jsonString = File(pathToFile).readText(Charsets.UTF_8)
     val jsonInput = Json.decodeFromString<JsonInput>(jsonString)
     val jsonValues = jsonInput.values
     val jsonElements = jsonInput.elements
