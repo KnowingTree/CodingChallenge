@@ -9,6 +9,7 @@ class Validation(
             numberOfViewSpots.toInt()
         } catch (e: NumberFormatException) {
             e.message?.let { output.writeErrors(it) }
+            System.err.println("'$numberOfViewSpots' could not be transformed to an integer")
             exitProcess(1)
         }
     }
@@ -21,6 +22,7 @@ class Validation(
         if (File(pathToFile).isFile) return pathToFile
         else {
             output.writeErrors("$pathToFile doesn't exist or isn't a file")
+            System.err.println("existence of $pathToFile cannot be validated")
             exitProcess(1)
         }
     }
