@@ -16,7 +16,6 @@ class ViewSpotFinder(
                 sharedNodes.plusAssign(element.nodes)
             }
         }
-
         println("searching for viewPoints finished")
 
         return viewSpots

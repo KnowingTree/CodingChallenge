@@ -10,13 +10,9 @@ import java.io.File
 fun main(args: Array<String>) {
     println("Hello World!")
 
-    println("Program arguments: ${args.joinToString()}")
-    if (args.isEmpty() || args.size < 2) {
-        File("ErrorOutput.txt").writeText("Arguments were wrong")
-        throw Exception("Arguments were wrong")
-    }
     val absolutePathToFile = args[0]
     val numberOfViewSpots = args[1].toInt()
+    val output = Output()
 
     println("Starting to search for up to $numberOfViewSpots viewPoints in $absolutePathToFile")
 
@@ -29,7 +25,6 @@ fun main(args: Array<String>) {
     val viewSpotFinder = ViewSpotFinder(elements)
     val viewSpots = viewSpotFinder.findViewSpots(numberOfViewSpots)
 
-    val bubu = Json.encodeToString(viewSpots)
-
-    File("Output.json").writeText(bubu)
+    val outputString = Json.encodeToString(viewSpots)
+    output.writeResultToOutput(outputString)
 }
